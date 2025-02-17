@@ -46,8 +46,12 @@ async def main():
             df = new_data_df
 
         print(f"Saving updated parquet: {config.parquet_filename}")
+
         df.to_parquet(
-            config.parquet_filename, engine="pyarrow", compression="zstd", index=None
+            DataLoader.get_relative_path(config.parquet_filename),
+            engine="pyarrow",
+            compression="zstd",
+            index=None,
         )
     else:
         if existing_df is not None:
