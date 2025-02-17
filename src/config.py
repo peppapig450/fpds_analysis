@@ -18,6 +18,6 @@ class Config:
         """Create configuration from environment variables."""
         return cls(
             data_directory=Path("../data"),
-            parquet_filename="sanitizied_contract_data.parquet",
+            parquet_filename="../data/sanitized_contract_data.parquet",
             use_live_data=False,
         )
