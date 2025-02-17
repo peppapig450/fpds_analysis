@@ -14,8 +14,9 @@ class DataLoader:
 
     def __init__(self, config: Config):
         self.config = config
+        self.data_directory = self.get_relative_path(self.config.data_directory)
         self.processed_files_path = (
-            self.config.data_directory / ".processed_file_hashes.txt"
+            self.data_directory / "processed_hashes.txt"
         )
 
     def _calculate_file_hash(self, file_path: Path) -> str:
@@ -29,6 +30,21 @@ class DataLoader:
                     break
                 hasher.update(chunk)
         return hasher.hexdigest()
+
+    @staticmethod
+    def get_relative_path(relative_path: str | Path) -> Path:
+        """Gets a path relative to the current file.
+
+        Args:
+            relative_path: The path relative to the current file.
+
+        Returns:
+            A pathlib.Path object representing the absolute path.
+        """
+        current_file_path = Path(__file__).resolve()
+        current_dir = current_file_path.parent
+        target_path = current_dir / relative_path
+        return target_path.resolve()
 
     def _read_processed_files(self) -> set:
         """Reads the set of processed file hashes from a file."""
@@ -59,8 +75,8 @@ class DataLoader:
 
     def load_json_files(self) -> list[dict[Any, Any]]:
         """Load FPDS data from JSON files in the configured directory."""
-        data = []
-        data_path = self.config.data_directory
+        data: list[dict[Any, Any]] = []
+        data_path = self.data_directory
 
         if not data_path.is_dir():
             raise FileNotFoundError(f"Directory '{data_path}' not found")
