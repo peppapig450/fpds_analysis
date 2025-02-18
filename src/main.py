@@ -16,7 +16,7 @@ async def main():
     processor = DataProcessor()
     reporter = ContractReporter(config)
 
-    parquet_path = Path(config.parquet_filename)
+    parquet_path = config.parquet_filename
     existing_df = None
 
     if parquet_path.exists() and not config.use_live_data:
@@ -48,7 +48,7 @@ async def main():
         print(f"Saving updated parquet: {config.parquet_filename}")
 
         df.to_parquet(
-            DataLoader.get_relative_path(config.parquet_filename),
+            config.parquet_filename,
             engine="pyarrow",
             compression="zstd",
             index=None,

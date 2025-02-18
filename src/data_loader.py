@@ -16,7 +16,7 @@ class DataLoader:
 
     def __init__(self, config: Config) -> None:
         self.config = config
-        self.data_directory = self.get_relative_path(self.config.data_directory)
+        self.data_directory = self.config.data_directory
         self.processed_files_path = self.data_directory / "processed_hashes.txt"
 
     def _calculate_file_hash(self, file_path: Path) -> str:
@@ -93,7 +93,6 @@ class DataLoader:
         newly_processed_hashes: set[str] = set()
 
         for file_path, file_hash in files_to_process:
-            file_hash = self._calculate_file_hash(file_path)
             try:
                 file_data = json.loads(file_path.read_text(encoding="utf-8"))
                 if isinstance(file_data, list):
