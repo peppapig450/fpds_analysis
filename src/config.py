@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
 
-from data_loader import DataLoader
-
+from utils import get_relative_path
 
 @dataclass(frozen=True)
 class Config:
@@ -19,7 +18,7 @@ class Config:
     def from_env(cls) -> Self:
         """Create configuration from environment variables."""
         return cls(
-            data_directory=DataLoader.get_relative_path("../data"),
-            parquet_filename=DataLoader.get_relative_path("../data/sanitized_contract_data.parquet"),
+            data_directory=get_relative_path("../data"),
+            parquet_filename=get_relative_path("../data/sanitized_contract_data.parquet"),
             use_live_data=False,
         )
